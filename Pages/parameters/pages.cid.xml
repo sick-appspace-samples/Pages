@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Device xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\..\..\..\Docu\Parameter.cid.xsd">
+  <UserLevel/>
+  <IFD>
+    <CID>
+      <Block Name="Pages">
+        <Group Name="sample">
+          <Variable Description="Period of timer cycle. Can be bound from UI elements and accessed from scripts. " Name="TimerPeriod">
+            <BasicType Usage="Normal">
+              <UInt DefaultValue="200" MaxValue="1000" MinValue="10"/>
+            </BasicType>
+          </Variable>
+        </Group>
+      </Block>
+    </CID>
+  </IFD>
+</Device>

@@ -1,0 +1,49 @@
+<layout-column id="ColumnLayout0" style="align-items:stretch">
+	<layout-row id="RowLayout1">
+		<layout-column id="ColumnLayout2" style="flex-grow:0;flex-basis:500px">
+			<davinci-value-display id="ValueDisplay2" label="Sample variable (polling - crown)">
+				<crown-binding property="value" name="Pages/getCounter" path="result/data/cntValue" auto-update="1000" update-on-resume></crown-binding>
+			</davinci-value-display>
+			<davinci-value-display id="ValueDisplay3" label="Sample Variable (event - crown-edpws)">
+				<crown-edpws-binding property="value" name="Pages/OnNewCounter" update-on-resume></crown-edpws-binding>
+			</davinci-value-display>
+			<davinci-value-display id="ValueDisplay4" label="Set Variable (set - crown)" unit="ms">
+			</davinci-value-display>
+			<davinci-numeric-field id="NumericField1" type="outline" min="0" ticks="1" group-separator="," decimal-separator="." format-pattern="0" max="100000" style="align-self:stretch">
+				<crown-binding event="change" name="Pages/setCounter" path="param/args/cntValue" auto-commit>
+				</crown-binding>
+			</davinci-numeric-field>
+			<davinci-button id="Button1" type="primary" style="align-self:flex-start;flex-grow:1">
+				<span>Reset! (set - crown)</span>
+				<crown-binding event="submit" name="Pages/resetCounter" auto-commit></crown-binding>
+			</davinci-button>
+			<layout-row id="RowLayout5" style="align-self:stretch;align-items:stretch;align-content:stretch;justify-content:space-between">
+				<davinci-value-display id="ValueDisplay1"  style="align-self:center" label="Timer (local  + crown update-on-resume + converter)">
+					<crown-binding property="value" name="Pages/getTimerStarted" path="result/data/active" auto-update="0" update-on-resume converter="boolToString"></crown-binding>
+  					<local-binding property="value" name="timerState" converter="boolToString"></local-binding>
+      	</davinci-value-display>
+				<davinci-toggle-switch id="ToggleSwitch1" tabindex="0" style="align-self:center" checked>
+					<crown-binding event="change" name="Pages/toggleTimer" path="param/args/active" auto-commit>
+	
+          </crown-binding>
+					<local-binding event="change" name="timerState" auto-commit></local-binding>
+					<crown-binding property="checked" name="Pages/getTimerStarted" path="result/data/active" auto-update="0" update-on-resume></crown-binding>
+				</davinci-toggle-switch>
+			</layout-row>
+			<davinci-collapse id="Collapse1" collapsed-title="Show" expanded-title="Hide" style="flex-grow:1;align-self:stretch" open>
+				<layout-row id="RowLayout2"	style="align-self:stretch;justify-content:space-between;align-items:stretch;align-content:stretch">
+					<davinci-value-display id="ValueDisplay5" label="Timer Period (parameter - sopas)">
+						<sopas-binding property="value" name="TimerPeriod" auto-update="0" update-on-resume></sopas-binding>
+					</davinci-value-display>
+					<davinci-slider id="Slider1" min="10" max="1000" ticks="1" value="100" unit="ms" legend style="flex-grow:1">
+						<span></span>
+						<sopas-binding event="change" name="TimerPeriod" auto-commit></sopas-binding>
+						<sopas-binding property="value" name="TimerPeriod" auto-update="0" update-on-resume></sopas-binding>
+					</davinci-slider>
+				</layout-row>
+        		<local-binding property="open" name="timerState"></local-binding>
+				<crown-binding property="open" name="Pages/getTimerStarted" path="result/data/active" auto-update="0" update-on-resume></crown-binding>
+			</davinci-collapse>
+		</layout-column>
+	</layout-row>
+</layout-column>

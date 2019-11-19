@@ -1,49 +1,26 @@
---[[----------------------------------------------------------------------------
-
-  Application Name: Pages
-
-  Description:
-  Introduction for creating application specific user interfaces.
-
-  This sample includes a specific user interface for its application. The application
-  itself has just an integer variable which is incremented by a timer periodically.
-  The user interface presents the incrementing variable and allows to reset it via
-  the reset button.
-  There are 2 different connections used for updating the variable on the page:
-  1: request (get) mechanism (updated every 1000ms through polling). Can only be used
-  uni-directional.
-  2: WebSocket push/get (each time variable changes). Can be used bi-directional.
-
-  How to demo this script:
-  Connect a web-browser to the AppEngine (localhost address "127.0.0.1") and you will
-  see the webpage of this sample. Use the reset-button to set the value to 0.
-  Use the toggle-button to turn the increment-timer on/off. In off-state the value can
-  be changed via the up/down buttons.
-
-  The UI itself is created using the UI builder. It can be found by clicking the
-  "Pages.msdd". In the dropdown menu at the upper right "sample" can be selected.
-  More information can be found in the tutorials.
-
-------------------------------------------------------------------------------]]
-
 --Start of Global Scope---------------------------------------------------------
 
---luacheck: globals timerHandle
+--luacheck: globals timerHandle paramListener
 
--- Serve get/set functions for web socket access
-Script.serveEvent("Pages.OnNewCounter", "OnNewCounter")
+-- Create parameter listener for TimerPeriod parameter (see .cid.xml file)
+-- which is used to store the timer period. This parameter is also bound in the UI.
+paramListener = Parameters.Listener.create()
+paramListener:add("TimerPeriod")
 
--- Create a periodic timer and register the function "handleTimer" on it
+-- Create a periodic timer, the handle needs to be hold so that the timer runs
 timerHandle = Timer.create()
-Timer.setExpirationTime(timerHandle, 100)
+Timer.setExpirationTime(timerHandle, Parameters.get("TimerPeriod"))
 Timer.setPeriodic(timerHandle, true)
 local timerStarted = false
 local counter  = 0
--- The handle needs to be hold so that the timer runs
+
 -- It is meaningful to evaluate the return value
 if not timerHandle then
-   print ("Could not create the timer")
+   Log.warning("Could not create the timer")
 end
+
+-- Serve event for UI binding on which the new counter value can be published
+Script.serveEvent("Pages.OnNewCounter", "OnNewCounter")
 
 --End of Global Scope-----------------------------------------------------------
 
@@ -57,27 +34,23 @@ end
 --Registration of the 'main' function to the 'Engine.OnStarted' event
 Script.register('Engine.OnStarted', main)
 
---@handleOnStarted()
-local function handleOnStarted()
-  -- TODO: Insert your event handling code here
-end
-Script.register("Engine.OnStarted", handleOnStarted)
 
 -- Called locally to set and publish the new counter value
 local function setAndPublishCounter(newCount)
   counter = newCount
-  Script.notifyEvent("OnNewCounter",counter)  --publish value at once
+  -- Publish new counter value via the served event
+  Script.notifyEvent("OnNewCounter", counter)
   print("Variable value:" .. counter)
 end
 
--- Definition of the callback function which is called via the web page when pressing "Reset!"
+-- Callback function which is called via the web page when pressing "Reset!"
 local function resetCounter()
   setAndPublishCounter(0)
 end
 -- Serve the function resetCounter for http access
 Script.serveFunction("Pages.resetCounter", resetCounter)
 
--- Definition of the callback function which is called via the web page when pressing the toggle button.
+-- Callback function which is called via the web page when pressing the toggle button.
 local function toggleTimer(active)
   print("Timer toggled.")
   if active == true then
@@ -90,17 +63,13 @@ end
 -- Serve the function toggleTimer for http access
 Script.serveFunction("Pages.toggleTimer", toggleTimer)
 
--- Definition of the callback function which is called via the web page when when slider is moved.
-local function setTimerPeriod(period)
-  print("Timer period set to " .. period)
-  Timer.stop(timerHandle)
-  Timer.setExpirationTime(timerHandle, period)
-  if timerStarted then
-    Timer.start(timerHandle)
-  end
+-- Callback function which is called via the web page on refresh.
+local function getTimerStarted()
+  return timerStarted
 end
--- Serve the function toggleTimer for http access
-Script.serveFunction("Pages.setTimerPeriod", setTimerPeriod)
+-- Serve the function getTimerStarted for http access
+Script.serveFunction("Pages.getTimerStarted", getTimerStarted)
+
 
 -- Definition of the callback function which is called periodically via the web page.
 local function getCounter()
@@ -109,17 +78,36 @@ end
 -- Serve a function to get the counter for http access
 Script.serveFunction("Pages.getCounter", getCounter)
 
--- Definition of the setter function which is called each time the value is changed by the user
+-- Setter function which is called each time the value is manually changed by the user.
 local function setCounter(newCount)
-  print("Variable set to " .. newCount)
-  counter = newCount
+  setAndPublishCounter(newCount)
 end
 Script.serveFunction("Pages.setCounter", setCounter)
 
--- Definition of the callback function which is registered to the Timer
+-- Callback function which is registered to the Timer and is called on every exipration
 local function handleTimer()
   setAndPublishCounter(counter + 1)
 end
 Timer.register(timerHandle, "OnExpired", handleTimer)
+
+
+-- Function which is called locally after "TimerPeriod" parameter change was detected
+local function setTimerPeriod(period)
+  print("Timer period set to " .. period)
+  Timer.stop(timerHandle)
+  Timer.setExpirationTime(timerHandle, period)
+  if timerStarted then
+    Timer.start(timerHandle)
+  end
+end
+
+-- Callback function which registered to the Parameter listener and called every time the
+-- "TimerPeriod" parameter has changed.
+--@handleOnChanged()
+local function handleOnChanged()
+  local period = Parameters.get("TimerPeriod")
+  setTimerPeriod(period)
+end
+Parameters.Listener.register(paramListener, "OnChanged", handleOnChanged)
 
 --End of Function and EventScope------------------------------------------------

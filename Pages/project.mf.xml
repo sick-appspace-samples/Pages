@@ -6,42 +6,35 @@
             <serves>
                 <event name="OnNewCounter">
                     <desc>Event is fired on every counter change.</desc>
-                    <param name="cntValue" type="int"/>
+                    <param name="cntValue" type="int" desc=""/>
                 </event>
                 <function name="resetCounter">
                     <desc>Set the counter to 0.</desc>
                 </function>
                 <function name="toggleTimer">
                     <desc>Toggle timer on/off</desc>
-                    <param name="active" type="bool"/>
-                </function>
-                <function name="setTimerPeriod">
-                    <desc>Set period time of the timer in ms.</desc>
-                    <param name="period" type="int"/>
+                    <param name="active" type="bool" desc=""/>
                 </function>
                 <function name="getCounter">
                     <desc>Get current counter value</desc>
-                    <return name="cntValue" type="int"/>
+                    <return name="cntValue" type="int" desc=""/>
                 </function>
                 <function name="setCounter">
                     <desc>Set the given counter value.</desc>
-                    <param name="cntValue" type="int"/>
+                    <param name="cntValue" type="int" desc=""/>
+                </function>
+                <function name="getTimerStarted">
+                    <desc></desc>
+                    <return name="active" type="bool" desc=""/>
                 </function>
             </serves>
-            <uses/>
         </crown>
         <meta key="author">AppSpace Sample</meta>
         <meta key="licensed">false</meta>
         <meta key="priority">low</meta>
-        <meta key="copy-protected">false</meta>
+        <meta key="version">3.0</meta>
         <meta key="read-protected">false</meta>
-        <meta key="version">2.5.0</meta>
-        <meta key="tags">Getting Started,Page</meta>
-        <entry path="pages" default="Pages.msdd">
-            <file type="application/zip">Pages.msdd</file>
-        </entry>
-        <entry path="scripts" default="Pages.lua">
-            <file type="text/x-lua">Pages.lua</file>
-        </entry>
+        <meta key="copy-protected">false</meta>
+        <entry path="scripts" default="Pages.lua"/>
     </application>
 </manifest>
