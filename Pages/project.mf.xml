@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <manifest>
     <application name="Pages">
         <crown name="Pages">
@@ -6,35 +6,34 @@
             <serves>
                 <event name="OnNewCounter">
                     <desc>Event is fired on every counter change.</desc>
-                    <param name="cntValue" type="int" desc=""/>
+                    <param desc="" name="cntValue" type="int"/>
                 </event>
                 <function name="resetCounter">
                     <desc>Set the counter to 0.</desc>
                 </function>
                 <function name="toggleTimer">
                     <desc>Toggle timer on/off</desc>
-                    <param name="active" type="bool" desc=""/>
+                    <param desc="" name="active" type="bool"/>
                 </function>
                 <function name="getCounter">
                     <desc>Get current counter value</desc>
-                    <return name="cntValue" type="int" desc=""/>
+                    <return desc="" name="cntValue" type="int"/>
                 </function>
                 <function name="setCounter">
                     <desc>Set the given counter value.</desc>
-                    <param name="cntValue" type="int" desc=""/>
+                    <param desc="" name="cntValue" type="int"/>
                 </function>
                 <function name="getTimerStarted">
-                    <desc></desc>
-                    <return name="active" type="bool" desc=""/>
+                    <desc/>
+                    <return desc="" name="active" type="bool"/>
                 </function>
             </serves>
         </crown>
         <meta key="author">AppSpace Sample</meta>
-        <meta key="licensed">false</meta>
         <meta key="priority">low</meta>
         <meta key="version">3.0</meta>
         <meta key="read-protected">false</meta>
         <meta key="copy-protected">false</meta>
-        <entry path="scripts" default="Pages.lua"/>
+        <entry default="Pages.lua" path="scripts"/>
     </application>
 </manifest>

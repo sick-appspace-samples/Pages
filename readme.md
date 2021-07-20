@@ -1,6 +1,7 @@
 ## Pages
-Introduction to creating application specific user interfaces 
-### Description
+Introduction to creating application specific user interfaces
+
+### Description:
 This sample includes a specific user interface for its application. The application itself has an integer variable which is incremented by a timer periodically.
 The user interface presents the incrementing variable, allows to reset it via a button and controlling if the timer is on or off. It is build with the UI-builder integrated in AppStudio. The UI-builder can be opened by clicking on the html file under page component -> pages -> pages01 -> main.html. When there is not yet a UI present in the App, the UI component and the UI files have to be created via the context menu in the working directory before the UI-builder can be used. 
 There are different UI elements and mechanisms for UI communication (bindings) shown in this sample. 
@@ -34,7 +35,7 @@ There are different UI elements and mechanisms for UI communication (bindings) s
 1. Retrieve value from sopas parameter on page reload. Sopas-binding from value property to parameter defined in .cid.xml file with update-on-resume.
 2. Change value of sopas parameter after moving the slider. Sopas-binding from change event to parameter parameter defined in .cid.xml.
 
-### How to Run 
+### How To Run: 
 This sample can be run on the Emulator or on a device. After starting, the user interface can be seen at the DevicePage in AppStudio or by using a web browser.
 Input number in input field sets the value. 
 The reset-button to set the value to 0.
@@ -44,5 +45,5 @@ The slider sets the period of the increment timer.
 ### More Information:
 See Tutorials for User Interface creation
 
-### Topics
+### Topics:
 System, User-Interface, Getting-Started, Sample, SICK-AppSpace
