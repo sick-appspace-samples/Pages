@@ -35,7 +35,7 @@ end
 Script.register('Engine.OnStarted', main)
 
 
--- Called locally to set and publish the new counter value
+---Called locally to set and publish the new counter value
 local function setAndPublishCounter(newCount)
   counter = newCount
   -- Publish new counter value via the served event
@@ -43,14 +43,14 @@ local function setAndPublishCounter(newCount)
   print("Variable value:" .. counter)
 end
 
--- Callback function which is called via the web page when pressing "Reset!"
+---Callback function which is called via the web page when pressing "Reset!"
 local function resetCounter()
   setAndPublishCounter(0)
 end
 -- Serve the function resetCounter for http access
 Script.serveFunction("Pages.resetCounter", resetCounter)
 
--- Callback function which is called via the web page when pressing the toggle button.
+---Callback function which is called via the web page when pressing the toggle button.
 local function toggleTimer(active)
   print("Timer toggled.")
   if active == true then
@@ -63,7 +63,7 @@ end
 -- Serve the function toggleTimer for http access
 Script.serveFunction("Pages.toggleTimer", toggleTimer)
 
--- Callback function which is called via the web page on refresh.
+---Callback function which is called via the web page on refresh.
 local function getTimerStarted()
   return timerStarted
 end
@@ -71,27 +71,27 @@ end
 Script.serveFunction("Pages.getTimerStarted", getTimerStarted)
 
 
--- Definition of the callback function which is called periodically via the web page.
+---Definition of the callback function which is called periodically via the web page.
 local function getCounter()
   return counter
 end
--- Serve a function to get the counter for http access
+---Serve a function to get the counter for http access
 Script.serveFunction("Pages.getCounter", getCounter)
 
--- Setter function which is called each time the value is manually changed by the user.
+---Setter function which is called each time the value is manually changed by the user.
 local function setCounter(newCount)
   setAndPublishCounter(newCount)
 end
 Script.serveFunction("Pages.setCounter", setCounter)
 
--- Callback function which is registered to the Timer and is called on every exipration
+---Callback function which is registered to the Timer and is called on every exipration
 local function handleTimer()
   setAndPublishCounter(counter + 1)
 end
 Timer.register(timerHandle, "OnExpired", handleTimer)
 
 
--- Function which is called locally after "TimerPeriod" parameter change was detected
+---Function which is called locally after "TimerPeriod" parameter change was detected
 local function setTimerPeriod(period)
   print("Timer period set to " .. period)
   Timer.stop(timerHandle)
@@ -101,9 +101,7 @@ local function setTimerPeriod(period)
   end
 end
 
--- Callback function which registered to the Parameter listener and called every time the
--- "TimerPeriod" parameter has changed.
---@handleOnChanged()
+---Callback function which registered to the Parameter listener and called every time the "TimerPeriod" parameter has changed.
 local function handleOnChanged()
   local period = Parameters.get("TimerPeriod")
   setTimerPeriod(period)
